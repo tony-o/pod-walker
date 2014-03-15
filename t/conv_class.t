@@ -21,7 +21,7 @@ is $def.para("foo", "bar"), "foo", "Default function eats additional arguments";
 
 {
     class FAKE::ERR {
-        my $.text = '';
+        has $.text = '';
         method print($thing) {
             $!text ~= $thing;
         }
@@ -54,8 +54,8 @@ is $def.para("foo", "bar"), "foo", "Default function eats additional arguments";
     is $d2.debug, True, "Class' debug can be turned on.";
 }
 
-sub foo($thing) { $thing.uc };
-sub bar($thing) { $thing.lc };
+sub foo($thing, :$debug) { $thing.uc };
+sub bar($thing, :$debug) { $thing.lc };
 
 my $d3 = Walker::Callees.new(:para(&foo));
 
