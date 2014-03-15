@@ -32,13 +32,39 @@ is $def.para("foo", "bar"), "foo", "Default function eats additional arguments";
 
     temp $*ERR = FAKE::ERR.new;
 
+    is $def.debug, False, "Class not set to debug by default.";
+
     $def.para("foo");
     is $*ERR.text, '', "Default function does not emit debug info by default.";
     $*ERR.clear;
 
     my $d2 = Walker::Callees.new(:debug);
 
-    $d2.para("foo", "bar", :baz);
+    is $def.debug, True, "New class with :debug successfully set to debug.";
+
     my $out = "Called with 'foo' to process, as well as Array.new(\"bar\") and (\"baz\" => Bool::True).hash to consider.\n";
+
+    $d2.para("foo", "bar", :baz);
     is $*ERR.text, $out, "Default function in debug-based class emits debug info.";
+    $*ERR.clear;
+
+    $d2.debug-OFF;
+    is $d2.debug, False, "Class' debug can be turned off.";
+    $d2.debug-ON;
+    is $d2.debug, True, "Class' debug can be turned on.";
 }
+
+sub foo($thing) { $thing.uc };
+sub bar($thing) { $thing.lc };
+
+my $d3 = Walker::Callees.new(:para(&foo));
+
+is $d3.para("Hello"), "HELLO", "Can assign function to name on initialization.";
+is $d3.code("Hello"), "Hello", "Other functions stay at default.";
+is $d3.item("Hello"), "Hello", "Other functions stay at default.";
+
+$d3.set-code(&bar);
+
+is $d3.para("Hello"), "HELLO", "Function assigned at init still there after post-init assignment.";
+is $d3.code("Hello"), "hello", "Function assignment post-init works.";
+is $d3.item("Hello"), "Hello", "Other functions stay at default.";
