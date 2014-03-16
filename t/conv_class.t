@@ -40,9 +40,9 @@ is $def.para("foo", "bar"), "foo", "Default function eats additional arguments";
 
     my $d2 = Walker::Callees.new(:debug);
 
-    is $def.debug, True, "New class with :debug successfully set to debug.";
+    is $d2.debug, True, "New class with :debug successfully set to debug.";
 
-    my $out = "Called with 'foo' to process, as well as Array.new(\"bar\") and (\"baz\" => Bool::True).hash to consider.\n";
+    my $out = "Called para\n";
 
     $d2.para("foo", "bar", :baz);
     is $*ERR.text, $out, "Default function in debug-based class emits debug info.";

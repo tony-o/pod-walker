@@ -2,8 +2,7 @@
 
 use v6;
 
-sub def_callee($text, *@a, *%b, :$debug) {
-    note "Called with '$text' to process, as well as {@a.perl} and {%b.perl} to consider." if $debug;
+sub def_callee($text, *@a, *%b) {
     $text;
 }
 
@@ -18,7 +17,7 @@ class Walker::Callees {
         }
     }
 
-    method new(:&para, :&named, :&comment, :&code, :&declarator, :&table, :&fcode, :&heading, :&item, :&config, :$debug) {
+    method new(:$debug = False, :&para, :&named, :&comment, :&code, :&declarator, :&table, :&fcode, :&heading, :&item, :&config) {
         self.bless(:$debug, :&para, :&named, :&comment, :&code,
             :&declarator, :&table, :&fcode, :&heading,
             :&item, :&config);
@@ -38,14 +37,14 @@ class Walker::Callees {
     method set-item(&f)       { %!funcs<item>       = &f; }
     method set-config(&f)     { %!funcs<config>     = &f; }
 
-    method para(|a)       { %!funcs<para>\     .(|a, :$!debug) }
-    method named(|a)      { %!funcs<named>\    .(|a, :$!debug) }
-    method comment(|a)    { %!funcs<comment>\  .(|a, :$!debug) }
-    method code(|a)       { %!funcs<code>\     .(|a, :$!debug) }
-    method declarator(|a) { %!funcs<declarator>.(|a, :$!debug) }
-    method table(|a)      { %!funcs<table>\    .(|a, :$!debug) }
-    method fcode(|a)      { %!funcs<fcode>\    .(|a, :$!debug) }
-    method heading(|a)    { %!funcs<heading>\  .(|a, :$!debug) }
-    method item(|a)       { %!funcs<item>\     .(|a, :$!debug) }
-    method config(|a)     { %!funcs<config>\   .(|a, :$!debug) }
+    method para(|a)       { note "Called para"       if $!debug; %!funcs<para>\     .(|a) }
+    method named(|a)      { note "Called named"      if $!debug; %!funcs<named>\    .(|a) }
+    method comment(|a)    { note "Called comment"    if $!debug; %!funcs<comment>\  .(|a) }
+    method code(|a)       { note "Called code"       if $!debug; %!funcs<code>\     .(|a) }
+    method declarator(|a) { note "Called declarator" if $!debug; %!funcs<declarator>.(|a) }
+    method table(|a)      { note "Called table"      if $!debug; %!funcs<table>\    .(|a) }
+    method fcode(|a)      { note "Called fcode"      if $!debug; %!funcs<fcode>\    .(|a) }
+    method heading(|a)    { note "Called heading"    if $!debug; %!funcs<heading>\  .(|a) }
+    method item(|a)       { note "Called item"       if $!debug; %!funcs<item>\     .(|a) }
+    method config(|a)     { note "Called config"     if $!debug; %!funcs<config>\   .(|a) }
 }
