@@ -97,7 +97,7 @@ multi sub pw-recurse($wc, Pod::Block::Table $node, $level) {
 }
 
 multi sub pw-recurse($wc, Pod::FormattingCode $node, $level) {
-    $wc.fcode(@*TEXT, $node.type);
+    $wc.fcode(@*TEXT, $node.type, $node.meta);
 }
 
 multi sub pw-recurse($wc, Pod::Heading $node, $level) {

@@ -85,7 +85,7 @@ sub plainConv($text) {
     $text;
 }
 
-sub fcodeConv(@text, $type) {
+sub fcodeConv(@text, $type, @meta) {
     "\{$type|{[~] @text}}"
 }
 

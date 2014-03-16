@@ -77,9 +77,10 @@ and a table caption (if any) is in C<$caption>.
 
 =head2 C<fcode>
 
-    fcode-func(@text, $type) { ... }
+    fcode-func(@text, $type, @meta) { ... }
 
-Formats some C<@text> based on the C<$type> of formatting code.
+Formats some C<@text> based on the C<$type> of formatting code. Relevant
+metadata is in C<@meta>.
 
 =head2 C<heading>
 
