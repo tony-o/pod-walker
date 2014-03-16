@@ -60,7 +60,7 @@ my $podblock = Pod::Block::Named.new(
    )
 );
 
-my $output = q:to/EOS/;
+my $output = q:to/EOS/.chomp;
 BLOCK[pod][
 BLOCK[TITLE][
 ¶[The Great Test]
@@ -85,8 +85,8 @@ sub plainConv($text) {
     $text;
 }
 
-sub fcodeConv($text, $type) {
-    "\{$type|$text}"
+sub fcodeConv(@text, $type) {
+    "\{$type|{[~] @text}}"
 }
 
 my $wc = Walker::Callees.new;
@@ -96,4 +96,4 @@ $wc.set-heading(&headingConv);
 $wc.set-plain(&plainConv);
 $wc.set-fcode(&fcodeConv);
 
-is pod_walk($wc, $podblock), $output, "Tree walked successfully.";
+is pod-walk($wc, $podblock), $output, "Tree walked successfully.";

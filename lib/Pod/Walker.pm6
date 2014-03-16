@@ -51,3 +51,68 @@ class Walker::Callees {
     method config(|a)     { note "Called config"     if $!debug; %!funcs<config>\   .(|a) }
     method plain(|a)      { note "Called plain"      if $!debug; %!funcs<plain>\    .(|a) }
 }
+
+# I know Pod::Config !~~ Pod::Block, but hopefully you're not using one as a
+# top-level node anyway :) .
+sub pod-walk(Walker::Callees $wc, Pod::Block $START) is export {
+    return pw-recurse($wc, $START, 0);
+}
+
+proto sub pw-recurse($wc, $node, $level) {
+    note "LEVEL $level".indent($level * 2) if $wc.debug;
+
+    my @*TEXT;
+    if $node ~~ Pod::Block {
+            
+        for $node.content {
+            @*TEXT.push(pw-recurse($wc, $_, $level+1));
+        }
+    }
+
+    {*}
+}
+
+multi sub pw-recurse($wc, Pod::Block::Para $node, $level) {
+    $wc.para(@*TEXT);
+}
+
+multi sub pw-recurse($wc, Pod::Block::Named $node, $level) {
+    $wc.named(@*TEXT, $node.name);
+}
+
+multi sub pw-recurse($wc, Pod::Block::Comment $node, $level) {
+    $wc.comment(@*TEXT);
+}
+
+multi sub pw-recurse($wc, Pod::Block::Code $node, $level) {
+    $wc.code(@*TEXT);
+}
+
+multi sub pw-recurse($wc, Pod::Block::Declarator $node, $level) {
+    $wc.declarator(@*TEXT, $node.WHEREFORE);
+}
+
+multi sub pw-recurse($wc, Pod::Block::Table $node, $level) {
+    $wc.table(@*TEXT, $node.headers, $node.caption);
+}
+
+multi sub pw-recurse($wc, Pod::FormattingCode $node, $level) {
+    $wc.fcode(@*TEXT, $node.type);
+}
+
+multi sub pw-recurse($wc, Pod::Heading $node, $level) {
+    $wc.heading(@*TEXT, $node.level);
+}
+
+multi sub pw-recurse($wc, Pod::Item $node, $level) {
+    $wc.item(@*TEXT, $node.level);
+}
+
+multi sub pw-recurse($wc, Pod::Config $node, $level) {
+    $wc.item($node.type, $node.config);
+}
+
+# XXX replace with "Stringy $node" when appropriate
+multi sub pw-recurse($wc, Str $node, $level) {
+    $wc.plain($node);
+}
