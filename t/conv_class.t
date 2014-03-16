@@ -16,6 +16,7 @@ is $def.fcode("foo"),      "foo", "Default &fcode is the identity function.";
 is $def.heading("foo"),    "foo", "Default &heading is the identity function.";
 is $def.item("foo"),       "foo", "Default &item is the identity function.";
 is $def.config("foo"),     "foo", "Default &config is the identity function.";
+is $def.plain("foo"),      "foo", "Default &plain is the identity function.";
 
 is $def.para("foo", "bar"), "foo", "Default function eats additional arguments";
 

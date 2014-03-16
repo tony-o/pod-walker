@@ -12,15 +12,16 @@ class Walker::Callees {
     has $.debug = False;
 
     submethod BUILD(:$!debug, *%OPTS) {
-        for <para named comment code declarator table fcode heading item config> {
+        for <para named comment code declarator table fcode heading item config plain> {
             %!funcs{$_} = %OPTS{$_} // &def_callee;
         }
     }
 
-    method new(:$debug = False, :&para, :&named, :&comment, :&code, :&declarator, :&table, :&fcode, :&heading, :&item, :&config) {
+    method new(:$debug = False, :&para, :&named, :&comment, :&code, :&declarator,
+               :&table, :&fcode, :&heading, :&item, :&config, :&plain) {
         self.bless(:$debug, :&para, :&named, :&comment, :&code,
             :&declarator, :&table, :&fcode, :&heading,
-            :&item, :&config);
+            :&item, :&config, :&plain);
     }
 
     method debug-ON { $!debug = True; }
@@ -36,6 +37,7 @@ class Walker::Callees {
     method set-heading(&f)    { %!funcs<heading>    = &f; }
     method set-item(&f)       { %!funcs<item>       = &f; }
     method set-config(&f)     { %!funcs<config>     = &f; }
+    method set-plain(&f)      { %!funcs<plain>      = &f; }
 
     method para(|a)       { note "Called para"       if $!debug; %!funcs<para>\     .(|a) }
     method named(|a)      { note "Called named"      if $!debug; %!funcs<named>\    .(|a) }
@@ -47,4 +49,5 @@ class Walker::Callees {
     method heading(|a)    { note "Called heading"    if $!debug; %!funcs<heading>\  .(|a) }
     method item(|a)       { note "Called item"       if $!debug; %!funcs<item>\     .(|a) }
     method config(|a)     { note "Called config"     if $!debug; %!funcs<config>\   .(|a) }
+    method plain(|a)      { note "Called plain"      if $!debug; %!funcs<plain>\    .(|a) }
 }
