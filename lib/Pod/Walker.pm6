@@ -101,15 +101,21 @@ multi sub pw-recurse($wc, Pod::FormattingCode $node, $level) {
 }
 
 multi sub pw-recurse($wc, Pod::Heading $node, $level) {
-    $wc.heading(@*TEXT, $node.level);
+    $wc.heading(@*TEXT, $node.level // Any);
 }
 
 multi sub pw-recurse($wc, Pod::Item $node, $level) {
-    $wc.item(@*TEXT, $node.level);
+    $wc.item(@*TEXT, $node.level // Any);
 }
 
 multi sub pw-recurse($wc, Pod::Config $node, $level) {
     $wc.item($node.type, $node.config);
+}
+
+multi sub pw-recurse($wc, @olditems, $level) {
+    my @newitems;
+    @newitems.push(pw-recurse($wc, $_, $level+1)) for @olditems;
+    @newitems;
 }
 
 # XXX replace with "Stringy $node" when appropriate
