@@ -3,6 +3,7 @@
 use v6;
 use Test;
 use Pod::Walker;
+plan 24;
 
 my $def = Walker::Callees.new;
 

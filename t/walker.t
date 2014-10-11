@@ -3,19 +3,21 @@
 use v6;
 use Test;
 
+plan 1;
+
 use Pod::Walker;
 
 my $podblock = Pod::Block::Named.new(
     name => "pod",
     config => ().hash,
-    content => Array.new(
+    contents => Array.new(
         Pod::Block::Named.new(
             name => "TITLE",
             config => ().hash,
-            content => Array.new(
+            contents=> Array.new(
                 Pod::Block::Para.new(
                     config => ().hash,
-                    content => Array.new(
+                    contents=> Array.new(
                         "The Great Test"
                     )
                 )
@@ -24,10 +26,10 @@ my $podblock = Pod::Block::Named.new(
         Pod::Heading.new(
             level => 1,
             config => ().hash,
-            content => Array.new(
+            contents=> Array.new(
                 Pod::Block::Para.new(
                     config => ().hash,
-                    content => Array.new(
+                    contents=> Array.new(
                         "Begins"
                     )
                 )
@@ -35,13 +37,13 @@ my $podblock = Pod::Block::Named.new(
         ),
         Pod::Block::Para.new(
             config => ().hash,
-            content => Array.new(
+            contents=> Array.new(
                 "And ",
                 Pod::FormattingCode.new(
                     type => "I",
                     meta => Array.new(),
                     config => ().hash,
-                    content => Array.new(
+                    contents=> Array.new(
                         "now"
                     )
                 ),
@@ -50,7 +52,7 @@ my $podblock = Pod::Block::Named.new(
                     type => "B",
                     meta => Array.new(),
                     config => ().hash,
-                    content => Array.new(
+                    contents=> Array.new(
                         "ends"
                     )
                 ),

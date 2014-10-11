@@ -64,7 +64,7 @@ proto sub pw-recurse($wc, $node, $level) {
     my @*TEXT;
     if $node ~~ Pod::Block {
             
-        for $node.content {
+        for $node.contents {
             @*TEXT.push(pw-recurse($wc, $_, $level+1));
         }
     }
